@@ -43,7 +43,7 @@ public struct Session: Codable, Identifiable {
     public struct ClientMeta: Codable, Equatable {
         public let name: String
         public let description: String?
-        public let icons: [URL]
+        public let icons: [URL]?
         public let url: URL
         public let scheme: String?
 
