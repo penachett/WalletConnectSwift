@@ -242,9 +242,10 @@ public class Client: WalletConnect {
             if !info.approved {
                 do {
                     try disconnect(from: session)
-                } catch { // session already disconnected
-                    delegate?.client(self, didDisconnect: session)
+                } catch {
+                    // session already disconnected
                 }
+                delegate?.client(self, didDisconnect: session)
             } else {
                 // we do not add sessions without walletInfo
                 let walletInfo = session.walletInfo!
