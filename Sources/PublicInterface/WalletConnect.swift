@@ -2,7 +2,13 @@
 //  Copyright © 2019 Gnosis Ltd. All rights reserved.
 //
 
+import Foundation
+
 open class WalletConnect {
+    private let reconnectTimeoutMillis: Int64 = 1500
+    private var lastReconnectTry: Int64 = 0
+    private let reconnectQueue = DispatchQueue(label: "org.walletconnect.swift.reconnect")
+    
     var communicator = Communicator()
 
     public init() {}
@@ -33,8 +39,16 @@ open class WalletConnect {
         guard session.walletInfo != nil else {
             throw WalletConnectError.missingWalletInfoInSession
         }
-        communicator.addOrUpdateSession(session)
-        listen(on: session.url)
+        
+        // checking last reconnect try timing to prevent spamreconnects
+        let current = Int64((Date().timeIntervalSince1970 * 1000.0).rounded())
+        let timePast = current - lastReconnectTry - reconnectTimeoutMillis
+        let delay = Double(timePast > 0 ? 0 : -timePast)/1000
+        reconnectQueue.asyncAfter(deadline: .now() + delay) { [weak self] in
+            self?.lastReconnectTry = Int64((Date().timeIntervalSince1970 * 1000.0).rounded())
+            self?.communicator.addOrUpdateSession(session)
+            self?.listen(on: session.url)
+        }
     }
 
     /// Disconnect from session.
