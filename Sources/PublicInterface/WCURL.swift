@@ -15,6 +15,10 @@ public struct WCURL: Hashable, Codable {
         let bridge = bridgeURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
         return "wc:\(topic)@\(version)?bridge=\(bridge)&key=\(key)"
     }
+    
+    public var fullyPercentEncodedStr: String {
+        absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
+    }
 
     public init(topic: String,
                 version: String = "1",
