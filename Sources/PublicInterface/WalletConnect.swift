@@ -5,7 +5,7 @@
 import Foundation
 
 open class WalletConnect {
-    private let reconnectTimeoutMillis: Int64 = 1500
+    private let reconnectTimeoutMillis: Int64 = 1000
     private var lastReconnectTry: Int64 = 0
     private let reconnectQueue = DispatchQueue(label: "org.walletconnect.swift.reconnect")
     
@@ -110,12 +110,13 @@ open class WalletConnect {
         guard communicator.pendingDisconnectSession(by: url) != nil else {
             // TODO: should we notify delegate that we try to reconnect?
             LogService.shared.log("WC: trying to reconnect session by url: \(url.bridgeURL.absoluteString)")
+            didDisconnect(session, isReconnecting: true)
             try! reconnect(to: session)
             return
         }
         communicator.removeSession(by: url)
         communicator.removePendingDisconnectSession(by: url)
-        didDisconnect(session)
+        didDisconnect(session, isReconnecting: false)
     }
 
     /// Process incomming text messages from the transport layer.
@@ -135,7 +136,7 @@ open class WalletConnect {
         preconditionFailure("Should be implemented in subclasses")
     }
 
-    func didDisconnect(_ session: Session) {
+    func didDisconnect(_ session: Session, isReconnecting: Bool) {
         preconditionFailure("Should be implemented in subclasses")
     }
 

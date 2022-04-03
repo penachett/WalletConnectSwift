@@ -123,7 +123,7 @@ open class Server: WalletConnect {
         delegate?.server(self, didFailToConnect: url)
     }
 
-    override func didDisconnect(_ session: Session) {
+    override func didDisconnect(_ session: Session, isReconnecting: Bool) {
         delegate?.server(self, didDisconnect: session)
     }
 

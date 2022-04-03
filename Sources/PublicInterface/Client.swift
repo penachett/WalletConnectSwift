@@ -9,7 +9,7 @@ public protocol ClientDelegate: AnyObject {
     func client(_ client: Client, didConnect url: WCURL)
     func client(_ client: Client, didConnect session: Session)
     func client(_ client: Client, didSubscribe url: WCURL)
-    func client(_ client: Client, didDisconnect session: Session)
+    func client(_ client: Client, didDisconnect session: Session, isReconnecting: Bool)
     func client(_ client: Client, didUpdate session: Session)
 }
 
@@ -247,7 +247,7 @@ public class Client: WalletConnect {
                 } catch {
                     // session already disconnected
                 }
-                delegate?.client(self, didDisconnect: session)
+                delegate?.client(self, didDisconnect: session, isReconnecting: false)
             } else {
                 // we do not add sessions without walletInfo
                 let walletInfo = session.walletInfo!
@@ -290,8 +290,8 @@ public class Client: WalletConnect {
         delegate?.client(self, didFailToConnect: url)
     }
 
-    override func didDisconnect(_ session: Session) {
-        delegate?.client(self, didDisconnect: session)
+    override func didDisconnect(_ session: Session, isReconnecting: Bool) {
+        delegate?.client(self, didDisconnect: session, isReconnecting: isReconnecting)
     }
 
     /// Thread-safe collection of client reponses

@@ -121,7 +121,7 @@ class MockClientDelegate: ClientDelegate {
     }
 
     var disconnectedSession: Session?
-    func client(_ client: Client, didDisconnect session: Session) {
+    func client(_ client: Client, didDisconnect session: Session, isReconnecting: Bool) {
         disconnectedSession = session
     }
 
@@ -129,4 +129,6 @@ class MockClientDelegate: ClientDelegate {
     func client(_ client: Client, didUpdate session: Session) {
         didUpdateSession = session
     }
+    
+    func client(_ client: Client, didSubscribe url: WCURL) {}
 }
