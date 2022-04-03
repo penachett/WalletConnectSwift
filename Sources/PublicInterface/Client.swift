@@ -8,6 +8,7 @@ public protocol ClientDelegate: AnyObject {
     func client(_ client: Client, didFailToConnect url: WCURL)
     func client(_ client: Client, didConnect url: WCURL)
     func client(_ client: Client, didConnect session: Session)
+    func client(_ client: Client, didSubscribe url: WCURL)
     func client(_ client: Client, didDisconnect session: Session)
     func client(_ client: Client, didUpdate session: Session)
 }
@@ -193,6 +194,7 @@ public class Client: WalletConnect {
                 self.handleHandshakeResponse(response)
             }
             communicator.send(request, topic: url.topic)
+            delegate?.client(self, didSubscribe: url)
         }
     }
 
