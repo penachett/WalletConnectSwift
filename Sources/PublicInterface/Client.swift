@@ -282,7 +282,10 @@ public class Client: WalletConnect {
 
     override func sendDisconnectSessionRequest(for session: Session) throws {
         let dappInfo = session.dAppInfo.with(approved: false)
-        let request = try Request(url: session.url, method: "wc_sessionUpdate", params: [dappInfo], id: nil)
+        let request = try Request(url: session.url,
+                                  method: "wc_sessionUpdate",
+                                  params: [dappInfo],
+                                  id: Request.payloadId())
         try send(request, completion: nil)
     }
 
