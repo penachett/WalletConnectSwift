@@ -28,6 +28,7 @@ class WalletConnectTests: XCTestCase {
     func test_whenReconnecting_thenConnects() {
         XCTAssertFalse(mockCommunicator.didListen)
         try? wc.reconnect(to: Session.testSession)
+        sleep(1)
         XCTAssertTrue(mockCommunicator.didListen)
         let addedSession = mockCommunicator.session(by: Session.testSession.url)
         XCTAssertEqual(addedSession, Session.testSession)
