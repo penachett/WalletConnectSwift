@@ -1,5 +1,15 @@
 # WalletConnectSwift
 
+This is a modified version of the original Swift Wallet Connect V1 library. It includes several small fixes to make dApp creation easier.
+
+This version can only be installed through Swift Package Manager.
+
+1. Using Xcode 13 go to File > Add packages > Click on the top right search bar
+2. Paste the project URL: https://github.com/penachett/WalletConnectSwift
+3. Click on next and select the project target
+
+-------Original README starts here-------
+
 Swift SDK implementing [WalletConnect 1.x.x](https://docs.walletconnect.org) protocol for native iOS Dapps and Wallets.
 
 # Features
